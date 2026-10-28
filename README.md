@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> Â· <a href="README_vi.md">Tiáº¿ng Viá»‡t</a> · <a href="https://hiyo412012.github.io/HiyoLauncher/">Website</a>
+  <a href="README.md">English</a> · <a href="README_vi.md">Tiếng Việt</a> · <a href="https://hiyo412012.github.io/HiyoLauncher/">Website</a>
 </p>
 
 <p align="center">
@@ -62,7 +62,7 @@ Grab the latest build from the [Releases page](https://github.com/hiyo412012/Hiy
 | Platform | Format |
 |---|---|
 | Windows (x64) | NSIS installer (`.exe`) |
-| macOS (x64 / arm64) | DMG (`.dmg`) â€” builds are currently **unsigned** |
+| macOS (x64 / arm64) | DMG (`.dmg`) — builds are currently **unsigned** |
 | Linux (x64) | AppImage (`.AppImage`) and Debian package (`.deb`) |
 
 ### Quick start
@@ -89,9 +89,9 @@ Other build commands: `npm run build`, `npm run dist`, `npm run dist:mac`, `npm 
 
 | OS | Node | Steps |
 |---|---|---|
-| ubuntu-latest | 24 | `npm ci` â†’ `npm run typecheck` â†’ `npm test` â†’ `npm run build` |
-| windows-latest | 24 | `npm ci` â†’ `npm run typecheck` â†’ `npm test` â†’ `npm run build` |
-| macos-latest | 24 | `npm ci` â†’ `npm run typecheck` â†’ `npm test` â†’ `npm run build` |
+| ubuntu-latest | 24 | `npm ci` → `npm run typecheck` → `npm test` → `npm run build` |
+| windows-latest | 24 | `npm ci` → `npm run typecheck` → `npm test` → `npm run build` |
+| macos-latest | 24 | `npm ci` → `npm run typecheck` → `npm test` → `npm run build` |
 
 Release builds additionally run `npx electron-builder --publish always` for Windows (NSIS), macOS (DMG, x64+arm64) and Linux (AppImage + deb).
 
@@ -100,7 +100,7 @@ Release builds additionally run `npx electron-builder --publish always` for Wind
 HiyoLauncher uses the **Microsoft device code flow** with a **public client** (no secret). You need an Azure app registration client ID:
 
 - Step-by-step guide: [`docs/microsoft-auth.md`](docs/microsoft-auth.md)
-- Paste your client ID in **Settings â†’ Advanced â†’ Microsoft client ID**, or set the `MS_CLIENT_ID` environment variable.
+- Paste your client ID in **Settings → Advanced → Microsoft client ID**, or set the `MS_CLIENT_ID` environment variable.
 
 Offline mode works without any client ID.
 
@@ -141,8 +141,8 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md). Please open issues using the provided 
 
 ## License
 
-[MIT](LICENSE) Â© 2026 HiyoLauncher contributors.
+[MIT](LICENSE) © 2026 HiyoLauncher contributors.
 
 ---
 
-**[Äá»c báº±ng tiáº¿ng Viá»‡t â†’](README_vi.md)**
+**[Đọc bằng tiếng Việt →](README_vi.md)**
