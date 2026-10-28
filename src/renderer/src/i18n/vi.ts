@@ -155,6 +155,13 @@ const vi = {
     loadMore: 'Tải thêm',
     downloads: 'lượt tải',
     versions: 'Phiên bản',
+    sort: {
+      relevance: 'Liên quan',
+      downloads: 'Lượt tải',
+      follows: 'Theo dõi',
+      newest: 'Mới nhất',
+      updated: 'Mới cập nhật',
+    },
     noVersions: 'Không có phiên bản phù hợp',
     empty: 'Không tìm thấy kết quả',
     error: 'Không tải được Modrinth. Kiểm tra kết nối mạng.',

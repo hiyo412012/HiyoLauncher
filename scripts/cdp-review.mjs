@@ -95,7 +95,7 @@ async function setup() {
   const info = await evaluate('window.hiyo ? await window.hiyo.app.info() : null', true)
   report.info = info
   if (!info) throw new Error('window.hiyo missing')
-  await evaluate('await window.hiyo.settings.update({ onboardingDone: true, language: "vi" })', true)
+  await evaluate('await window.hiyo.settings.update({ onboardingDone: true, language: "en" })', true)
   const instances = await evaluate('await window.hiyo.instances.list()', true)
   if (!instances.length) {
     await evaluate(
@@ -128,7 +128,7 @@ try {
   await visit('04-browse', '#/browse', 1800)
   await visit('05-modpacks', '#/modpacks', 1800)
   await visit('06-skins', '#/skins', 1200)
-  await visit('07-servers', '#/servers')
+  await visit('07-servers', '#/servers', 2600)
   await visit('08-logs', '#/logs')
   await visit('09-settings', '#/settings', 1200)
   await visit('10-onboarding', '#/onboarding')

@@ -63,7 +63,7 @@ export function ProjectCard({ hit, installed = false, onClick, onInstall }: Proj
             ))}
           </div>
           <span className="shrink-0 text-xs text-muted-foreground">
-            {t('browse.downloads', { defaultValue: '{{count}} downloads', count: formatNumber(hit.downloads) })}
+            {formatNumber(hit.downloads)} {t('browse.downloads', { defaultValue: 'downloads' })}
           </span>
         </div>
 

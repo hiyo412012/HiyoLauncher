@@ -13,6 +13,10 @@
 </p>
 
 <p align="center">
+  <a href="README.md">English</a> · <a href="README_vi.md">Tiếng Việt</a>
+</p>
+
+<p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
   <a href="https://github.com/hiyo412012/HiyoLauncher/actions/workflows/ci.yml"><img src="https://github.com/hiyo412012/HiyoLauncher/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://github.com/hiyo412012/HiyoLauncher/releases"><img src="https://img.shields.io/github/v/release/hiyo412012/HiyoLauncher?label=release" alt="Release" /></a>
@@ -45,11 +49,11 @@
 |---|---|
 | ![Instances](docs/screenshots/instances.png) | ![Modpacks](docs/screenshots/modpacks.png) |
 
-| Settings | Logs |
+| Settings | Servers |
 |---|---|
-| ![Settings](docs/screenshots/settings.png) | ![Logs](docs/screenshots/logs.png) |
+| ![Settings](docs/screenshots/settings.png) | ![Servers](docs/screenshots/servers.png) |
 
-> Screenshots use the default **Pastel Ocean** theme. Themes, accent colors, density and backgrounds are fully customizable.
+> Screenshots use the default **Pastel Ocean** theme and the English UI. Themes, accent colors, density and backgrounds are fully customizable.
 
 ## Download & install
 
@@ -96,7 +100,7 @@ Release builds additionally run `npx electron-builder --publish always` for Wind
 HiyoLauncher uses the **Microsoft device code flow** with a **public client** (no secret). You need an Azure app registration client ID:
 
 - Step-by-step guide: [`docs/microsoft-auth.md`](docs/microsoft-auth.md)
-- Paste your client ID in **Settings → Accounts → Microsoft client ID**, or set the `MS_CLIENT_ID` environment variable.
+- Paste your client ID in **Settings → Advanced → Microsoft client ID**, or set the `MS_CLIENT_ID` environment variable.
 
 Offline mode works without any client ID.
 
@@ -141,6 +145,4 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md). Please open issues using the provided 
 
 ---
 
-## Tóm tắt tiếng Việt
-
-HiyoLauncher là launcher Minecraft mã nguồn mở, đa nền tảng, tập trung vào trải nghiệm "mở là chơi": nhanh, ổn định, cá nhân hoá sâu, cài mod/modpack/shader/resource pack trực tiếp từ Modrinth, hỗ trợ tài khoản Microsoft (device code) và tài khoản offline (có disclaimer). Mặc định theme Pastel Ocean. Không liên kết với Mojang/Microsoft/Modrinth. Giấy phép MIT.
+**[Đọc bằng tiếng Việt →](README_vi.md)**

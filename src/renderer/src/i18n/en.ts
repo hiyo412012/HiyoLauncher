@@ -155,6 +155,13 @@ const en = {
     loadMore: 'Load more',
     downloads: 'downloads',
     versions: 'Versions',
+    sort: {
+      relevance: 'Relevance',
+      downloads: 'Downloads',
+      follows: 'Follows',
+      newest: 'Newest',
+      updated: 'Recently updated',
+    },
     noVersions: 'No compatible version',
     empty: 'No results',
     error: 'Could not reach Modrinth. Check your connection.',
