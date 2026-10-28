@@ -79,7 +79,8 @@
     "publish": {
       "provider": "github",
       "owner": "hiyo412012",
-      "repo": "HiyoLauncher"
+      "repo": "HiyoLauncher",
+      "releaseType": "release"
     }
   },
   "dependencies": {
