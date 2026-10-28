@@ -5,7 +5,8 @@
   "main": "./out/main/index.js",
   "type": "module",
   "author": {
-    "name": "HiyoLauncher contributors"
+    "name": "HiyoLauncher contributors",
+    "email": "hiyo412012@users.noreply.github.com"
   },
   "license": "MIT",
   "homepage": "https://github.com/hiyo412012/HiyoLauncher",
