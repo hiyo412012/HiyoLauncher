@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   Account,
   AppInfo,
   CrashAnalysis,
@@ -202,7 +202,7 @@ export interface HiyoApi {
     add(entry: ServerEntry): Promise<ServerEntry[]>
     remove(index: number): Promise<void>
     ping(entry: { host: string; port?: number }): Promise<ServerStatus>
-    join(instanceId: string, index: number): Promise<void>
+    join(instanceId: string, index: number, accountId?: string): Promise<void>
   }
   skins: {
     get(accountId: string): Promise<{ url?: string; model?: string }>
@@ -228,3 +228,4 @@ export interface HiyoApi {
   onAuthDeviceCode(cb: (info: DeviceCodeInfo) => void): Unsubscribe
   onUpdaterStatus(cb: (s: UpdaterStatus) => void): Unsubscribe
 }
+

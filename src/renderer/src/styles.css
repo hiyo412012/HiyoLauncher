@@ -1,0 +1,311 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.5rem;
+}
+
+/* ---------- Base ---------- */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Theme tokens: Ocean (default) ---------- */
+:root,
+:root[data-theme='ocean'][data-mode='dark'] {
+  --bg: #071a22;
+  --bg-elevated: #0b232c;
+  --surface: #0f2d37;
+  --surface-2: #143a46;
+  --text: #e6f7f9;
+  --muted: #93b7bf;
+  --accent: #6fd6e4;
+  --accent-2: #9be8dc;
+  --ring: #6fd6e4;
+  --danger: #ff8d9b;
+  --warning: #ffd48a;
+  --success: #8ee6b0;
+  color-scheme: dark;
+}
+
+:root[data-theme='ocean'][data-mode='light'] {
+  --bg: #f2fbfc;
+  --bg-elevated: #f7fdfe;
+  --surface: #ffffff;
+  --surface-2: #e6f6f9;
+  --text: #0b2b33;
+  --muted: #4a7a85;
+  --accent: #168fa3;
+  --accent-2: #2bb3c4;
+  --ring: #168fa3;
+  --danger: #e5536b;
+  --warning: #c9891a;
+  --success: #2a9d62;
+  color-scheme: light;
+}
+
+/* ---------- Aurora ---------- */
+:root[data-theme='aurora'][data-mode='dark'] {
+  --bg: #0e1320;
+  --bg-elevated: #131a2c;
+  --surface: #1a2238;
+  --surface-2: #232d4a;
+  --text: #eef2ff;
+  --muted: #9aa6c7;
+  --accent: #8b7cff;
+  --accent-2: #5eead4;
+  --ring: #8b7cff;
+  --danger: #ff8d9b;
+  --warning: #ffd48a;
+  --success: #8ee6b0;
+  color-scheme: dark;
+}
+:root[data-theme='aurora'][data-mode='light'] {
+  --bg: #f5f3ff;
+  --bg-elevated: #fbfaff;
+  --surface: #ffffff;
+  --surface-2: #ece9ff;
+  --text: #1a1633;
+  --muted: #5b5680;
+  --accent: #6d5cff;
+  --accent-2: #2dd4bf;
+  --ring: #6d5cff;
+  --danger: #dc2626;
+  --warning: #b45309;
+  --success: #15803d;
+  color-scheme: light;
+}
+
+/* ---------- Voxel ---------- */
+:root[data-theme='voxel'][data-mode='dark'] {
+  --bg: #0d1a14;
+  --bg-elevated: #12231b;
+  --surface: #183026;
+  --surface-2: #204033;
+  --text: #eaf7ef;
+  --muted: #94b8a4;
+  --accent: #6ee7a8;
+  --accent-2: #fbbf24;
+  --ring: #6ee7a8;
+  --danger: #ff8d9b;
+  --warning: #ffd48a;
+  --success: #8ee6b0;
+  color-scheme: dark;
+}
+:root[data-theme='voxel'][data-mode='light'] {
+  --bg: #f3faf6;
+  --bg-elevated: #f9fdfb;
+  --surface: #ffffff;
+  --surface-2: #e3f2ea;
+  --text: #0f2a1d;
+  --muted: #4d7a63;
+  --accent: #16a34a;
+  --accent-2: #d97706;
+  --ring: #16a34a;
+  --danger: #dc2626;
+  --warning: #b45309;
+  --success: #15803d;
+  color-scheme: light;
+}
+
+/* ---------- Mono ---------- */
+:root[data-theme='mono'][data-mode='dark'] {
+  --bg: #0f0f10;
+  --bg-elevated: #161618;
+  --surface: #1c1c1f;
+  --surface-2: #26262a;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --accent: #d4d4d8;
+  --accent-2: #a1a1aa;
+  --ring: #d4d4d8;
+  --danger: #f87171;
+  --warning: #fbbf24;
+  --success: #4ade80;
+  color-scheme: dark;
+}
+:root[data-theme='mono'][data-mode='light'] {
+  --bg: #fafafa;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f0f0f2;
+  --text: #111113;
+  --muted: #52525b;
+  --accent: #27272a;
+  --accent-2: #71717a;
+  --ring: #27272a;
+  --danger: #dc2626;
+  --warning: #b45309;
+  --success: #15803d;
+  color-scheme: light;
+}
+
+/* ---------- Background layers ---------- */
+:root {
+  --app-bg-image: none;
+  --app-bg-video: '';
+  --app-bg-blur: 0px;
+  --app-bg-dim: 0.4;
+  --app-bg-opacity: 1;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-color: var(--bg);
+  background-image: var(--app-bg-image);
+  background-size: cover;
+  background-position: center;
+  filter: blur(var(--app-bg-blur)) brightness(calc(1 - var(--app-bg-dim, 0.4)));
+  transform: scale(1.05);
+  transition: filter 300ms ease;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg) 30%, transparent),
+    color-mix(in srgb, var(--bg) 75%, transparent)
+  );
+  pointer-events: none;
+}
+
+/* ---------- Utility classes ---------- */
+.glass {
+  background-color: color-mix(in srgb, var(--surface) 55%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.bg-mesh {
+  background-image:
+    radial-gradient(at 12% 18%, color-mix(in srgb, var(--accent) 18%, transparent) 0px, transparent 45%),
+    radial-gradient(at 88% 12%, color-mix(in srgb, var(--accent-2) 16%, transparent) 0px, transparent 40%),
+    radial-gradient(at 70% 85%, color-mix(in srgb, var(--surface-2) 40%, transparent) 0px, transparent 50%),
+    radial-gradient(at 20% 80%, color-mix(in srgb, var(--accent) 10%, transparent) 0px, transparent 45%);
+}
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ring);
+}
+
+/* ---------- Scrollbars ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-2) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--surface-2);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted);
+  background-clip: padding-box;
+}
+
+/* ---------- Focus ---------- */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role='button']:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Reduced motion / animations toggle ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-animations='false'] *,
+:root[data-animations='false'] *::before,
+:root[data-animations='false'] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- Density ---------- */
+:root[data-density='compact'] {
+  --density-gap: 0.5rem;
+  --density-pad: 0.5rem;
+}
+:root[data-density='cozy'] {
+  --density-gap: 0.75rem;
+  --density-pad: 0.75rem;
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  color: var(--text);
+}
+
+/* ---------- Helpers ---------- */
+.text-muted {
+  color: var(--muted);
+}
+.surface {
+  background-color: var(--surface);
+}
+.surface-2 {
+  background-color: var(--surface-2);
+}

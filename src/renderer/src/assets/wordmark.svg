@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160" fill="none">
+  <defs>
+    <linearGradient id="wmGrad" x1="80" y1="16" x2="80" y2="144" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9be8dc"/>
+      <stop offset="1" stop-color="#6fd6e4"/>
+    </linearGradient>
+  </defs>
+  <!-- mark -->
+  <svg x="16" y="16" width="128" height="128" viewBox="0 0 256 256">
+    <rect x="54" y="40" width="56" height="176" rx="28" fill="url(#wmGrad)"/>
+    <rect x="146" y="40" width="56" height="176" rx="28" fill="url(#wmGrad)"/>
+    <rect x="54" y="96" width="148" height="64" rx="32" fill="url(#wmGrad)"/>
+  </svg>
+  <!-- wordmark text -->
+  <text x="168" y="108" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="72" font-weight="700" letter-spacing="-1" fill="#e6f7f9">HiyoLauncher</text>
+  <rect x="168" y="124" width="120" height="4" rx="2" fill="#6fd6e4" opacity="0.7"/>
+</svg>

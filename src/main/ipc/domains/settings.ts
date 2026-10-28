@@ -1,13 +1,9 @@
-import { app } from 'electron'
-import { createPaths } from '../../services/paths'
-import { SettingsService } from '../../services/settings'
+import { getServices } from '../../services/context'
 import type { Router } from '../router'
 import * as S from '../../../shared/schemas'
 
 export function registerSettingsIpc(router: Router): void {
-  const userData = app.getPath('userData')
-  const paths = createPaths(userData, userData)
-  const service = new SettingsService(userData, paths)
+  const service = getServices().settings
 
   router.handle('settings:get', S.SettingsGetSchema, async () => {
     return await service.get()

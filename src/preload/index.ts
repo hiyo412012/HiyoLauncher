@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+﻿import { contextBridge, ipcRenderer } from 'electron'
 import { IPC, EVENTS } from '../shared/ipc'
 import type { HiyoApi } from '../shared/ipc'
 
@@ -97,7 +97,7 @@ const api: HiyoApi = {
     add: (entry) => invoke(IPC.servers.add, entry),
     remove: (index) => invoke(IPC.servers.remove, { index }),
     ping: (entry) => invoke(IPC.servers.ping, entry),
-    join: (instanceId, index) => invoke(IPC.servers.join, { instanceId, index }),
+    join: (instanceId, index, accountId) => invoke(IPC.servers.join, { instanceId, index, accountId }),
   },
   skins: {
     get: (accountId) => invoke(IPC.skins.get, { accountId }),
@@ -131,3 +131,4 @@ const api: HiyoApi = {
 }
 
 contextBridge.exposeInMainWorld('hiyo', api)
+

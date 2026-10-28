@@ -1,17 +1,28 @@
-import { BrowserWindow, shell } from 'electron'
+import { BrowserWindow, shell, app } from 'electron'
 import path from 'node:path'
+import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export function createMainWindow(): BrowserWindow {
+  const iconCandidates = [
+    path.join(app.getAppPath(), 'build', 'icon.png'),
+    path.join(app.getAppPath(), '..', '..', 'build', 'icon.png'),
+    path.join(process.cwd(), 'build', 'icon.png'),
+    path.join(process.resourcesPath ?? '', 'icon.png'),
+  ]
+  const iconPath = iconCandidates.find((candidate) => candidate && existsSync(candidate))
   const win = new BrowserWindow({
     width: 1280,
     height: 832,
     minWidth: 1024,
     minHeight: 680,
+    title: 'HiyoLauncher',
     backgroundColor: '#071a22',
     show: false,
+    autoHideMenuBar: true,
+    ...(iconPath ? { icon: iconPath } : {}),
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.mjs'),
       sandbox: false,

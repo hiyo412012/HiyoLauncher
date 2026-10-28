@@ -1,20 +1,22 @@
-import { app, dialog, BrowserWindow } from 'electron'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { createPaths } from './services/paths'
-import { SettingsService } from './services/settings'
-import { createLogger } from './services/logger'
+import { app, dialog, BrowserWindow, Menu } from 'electron'
+import { initServices } from './services/context'
+import { getLogger } from './services/logger'
 import { registerIpc } from './ipc'
 import { createMainWindow } from './window'
+import { initUpdater } from './services/updater'
+import { syncDiscord } from './services/discord'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+// Must run before any app.getPath('userData') call.
+app.setName('HiyoLauncher')
+if (process.platform === 'win32') app.setAppUserModelId('org.hiyolauncher.app')
+Menu.setApplicationMenu(null)
 
 const gotLock = app.requestSingleInstanceLock()
 if (!gotLock) {
   app.quit()
 }
 
-let mainWindow: any = null
+let mainWindow: BrowserWindow | null = null
 
 app.on('second-instance', () => {
   if (mainWindow) {
@@ -25,31 +27,26 @@ app.on('second-instance', () => {
 
 process.on('uncaughtException', (err) => {
   try {
-    const userData = app.getPath('userData')
-    const logger = createLogger(path.join(userData, 'logs', 'main.log'))
-    logger.error('uncaughtException', { message: err?.message, stack: err?.stack })
+    getLogger().error('uncaughtException', { message: err?.message, stack: err?.stack })
   } catch {}
   dialog.showErrorBox('HiyoLauncher', String(err?.message ?? err))
 })
 
 process.on('unhandledRejection', (reason: any) => {
   try {
-    const userData = app.getPath('userData')
-    const logger = createLogger(path.join(userData, 'logs', 'main.log'))
-    logger.error('unhandledRejection', { reason: String(reason?.message ?? reason) })
+    getLogger().error('unhandledRejection', { reason: String(reason?.message ?? reason) })
   } catch {}
 })
 
 app.whenReady().then(async () => {
-  const userData = app.getPath('userData')
-  const paths = createPaths(userData, path.join(userData, 'minecraft'))
-  const logger = createLogger(path.join(userData, 'logs', 'main.log'))
-  logger.info('app ready', { version: app.getVersion() })
-  const settings = new SettingsService(userData, paths)
-  await settings.get()
-  await paths.ensureDirs()
+  await initServices()
+  getLogger().info('app ready', { version: app.getVersion() })
   registerIpc()
   mainWindow = createMainWindow()
+  setTimeout(() => {
+    void initUpdater()
+    void syncDiscord()
+  }, 1500)
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) mainWindow = createMainWindow()
   })

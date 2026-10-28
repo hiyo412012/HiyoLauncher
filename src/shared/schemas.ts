@@ -1,4 +1,4 @@
-import { z } from 'zod'
+﻿import { z } from 'zod'
 import type { ContentKind, Loader, SettingsPatch } from './types'
 
 const idSchema = z.string().min(1).max(128)
@@ -129,6 +129,7 @@ export const ServersPingSchema = z.object({
 export const ServersJoinSchema = z.object({
   instanceId: idSchema,
   index: z.number().int().nonnegative(),
+  accountId: idSchema.optional(),
 })
 
 export const SkinsGetSchema = z.object({ accountId: idSchema })
@@ -169,3 +170,4 @@ export const MiscUpdaterInstallSchema = z.object({}).optional()
 export const EmptySchema = z.object({}).optional()
 
 export type Inferred<T> = T extends z.ZodTypeAny ? z.infer<T> : never
+

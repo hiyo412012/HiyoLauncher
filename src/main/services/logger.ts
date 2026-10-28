@@ -74,3 +74,17 @@ export class Logger {
 export function createLogger(file: string): Logger {
   return new Logger({ file })
 }
+
+let activeLogger: Logger | null = null
+
+export function setActiveLogger(logger: Logger): void {
+  activeLogger = logger
+}
+
+export function getLogger(): Logger {
+  if (!activeLogger) {
+    // Never throw from logging: fall back to an in-memory no-op-ish logger.
+    activeLogger = createLogger('hiyolauncher.log')
+  }
+  return activeLogger
+}

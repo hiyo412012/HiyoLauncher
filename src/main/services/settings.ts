@@ -68,3 +68,22 @@ export class SettingsService {
 
   getStore(): JsonStore<Settings> { return this.store }
 }
+
+let activeSettings: SettingsService | null = null
+
+export function setActiveSettings(service: SettingsService): void {
+  activeSettings = service
+}
+
+export function getSettingsService(): SettingsService {
+  if (!activeSettings) throw new Error('SETTINGS_NOT_READY')
+  return activeSettings
+}
+
+export async function getSettings(): Promise<Settings> {
+  return getSettingsService().get()
+}
+
+export async function updateSettings(patch: SettingsPatch): Promise<Settings> {
+  return getSettingsService().update(patch)
+}

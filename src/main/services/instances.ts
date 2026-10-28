@@ -7,11 +7,17 @@ import type { Instance } from '../../shared/types'
 
 const RESERVED_CHARS = /[<>:"/\\|?*]/
 
+function fail(code: string, message = code): never {
+  const e: any = new Error(message)
+  e.code = code
+  throw e
+}
+
 function validateName(name: string): void {
-  if (typeof name !== 'string') throw new Error('INVALID_NAME')
-  if (name.length < 1 || name.length > 48) throw new Error('INVALID_NAME')
-  if (RESERVED_CHARS.test(name)) throw new Error('INVALID_NAME')
-  if (name.startsWith('.')) throw new Error('INVALID_NAME')
+  if (typeof name !== 'string') fail('INVALID_NAME', 'Invalid instance name')
+  if (name.length < 1 || name.length > 48) fail('INVALID_NAME', 'Instance name must be 1-48 characters')
+  if (RESERVED_CHARS.test(name)) fail('INVALID_NAME', 'Instance name contains invalid characters')
+  if (name.startsWith('.')) fail('INVALID_NAME', 'Instance name cannot start with a dot')
   assertSafeSegment(name)
 }
 
@@ -54,7 +60,7 @@ export class InstanceService {
     validateName(input.name)
     const existing = await this.list()
     if (existing.some((i) => i.name.toLowerCase() === input.name.toLowerCase())) {
-      throw new Error('CONFLICT')
+      fail('CONFLICT', 'An instance with that name already exists')
     }
     const id = newId()
     assertSafeSegment(id)
@@ -80,8 +86,12 @@ export class InstanceService {
   }
 
   async get(id: string): Promise<Instance> {
-    const raw = await fs.readFile(this.instanceFile(id), 'utf8')
-    return JSON.parse(raw) as Instance
+    try {
+      const raw = await fs.readFile(this.instanceFile(id), 'utf8')
+      return JSON.parse(raw) as Instance
+    } catch {
+      fail('NOT_FOUND', `Instance not found: ${id}`)
+    }
   }
 
   async update(id: string, patch: Partial<Instance>): Promise<Instance> {
@@ -91,7 +101,7 @@ export class InstanceService {
       validateName(patch.name)
       const existing = await this.list()
       if (existing.some((i) => i.id !== id && i.name.toLowerCase() === patch.name!.toLowerCase())) {
-        throw new Error('CONFLICT')
+        fail('CONFLICT', 'An instance with that name already exists')
       }
     }
     await atomicWriteJson(this.instanceFile(id), merged)
@@ -113,7 +123,7 @@ export class InstanceService {
     const current = await this.get(id)
     const existing = await this.list()
     if (existing.some((i) => i.name.toLowerCase() === newName.toLowerCase())) {
-      throw new Error('CONFLICT')
+      fail('CONFLICT', 'An instance with that name already exists')
     }
     const newInst = await this.create({
       name: newName,
@@ -151,11 +161,45 @@ export class InstanceService {
 
   async setIcon(id: string, dataUrl: string): Promise<void> {
     const m = /^data:image\/(png|jpeg|webp);base64,(.+)$/i.exec(dataUrl)
-    if (!m) throw new Error('INVALID_ICON')
+    if (!m) fail('INVALID_ICON', 'Icon must be a PNG, JPEG or WebP data URL')
     const buf = Buffer.from(m[2], 'base64')
-    if (buf.length > 2 * 1024 * 1024) throw new Error('ICON_TOO_LARGE')
+    if (buf.length > 2 * 1024 * 1024) fail('ICON_TOO_LARGE', 'Icon must be smaller than 2 MB')
     const inst = await this.get(id)
     inst.icon = dataUrl
     await atomicWriteJson(this.instanceFile(id), inst)
   }
 }
+
+// ---------------------------------------------------------------------------
+// Module-level accessors used by other main-process services.
+// ---------------------------------------------------------------------------
+let activeInstances: InstanceService | null = null
+
+export function setActiveInstances(service: InstanceService): void {
+  activeInstances = service
+}
+
+export function getInstanceService(): InstanceService {
+  if (!activeInstances) throw new Error('INSTANCES_NOT_READY')
+  return activeInstances
+}
+
+export const listInstances = (): Promise<Instance[]> => getInstanceService().list()
+export const getInstance = (id: string): Promise<Instance> => getInstanceService().get(id)
+export const createInstance = (input: {
+  name: string
+  mcVersion: string
+  loader: any
+  loaderVersion?: string
+  icon?: string
+}): Promise<Instance> => getInstanceService().create(input)
+export const updateInstance = (id: string, patch: Partial<Instance>): Promise<Instance> =>
+  getInstanceService().update(id, patch)
+export const removeInstance = (id: string, deleteFiles = false): Promise<void> =>
+  getInstanceService().remove(id, deleteFiles)
+export const deleteInstance = removeInstance
+export const cloneInstance = (id: string, newName: string): Promise<Instance> =>
+  getInstanceService().clone(id, newName)
+export const repairInstance = (id: string): Promise<void> => getInstanceService().repair(id)
+export const setInstanceIcon = (id: string, dataUrl: string): Promise<void> =>
+  getInstanceService().setIcon(id, dataUrl)

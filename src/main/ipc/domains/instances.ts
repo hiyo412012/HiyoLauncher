@@ -1,13 +1,9 @@
-import { app } from 'electron'
-import { createPaths } from '../../services/paths'
-import { InstanceService } from '../../services/instances'
+import { getServices } from '../../services/context'
 import type { Router } from '../router'
 import * as S from '../../../shared/schemas'
 
 export function registerInstancesIpc(router: Router): void {
-  const userData = app.getPath('userData')
-  const paths = createPaths(userData, userData)
-  const service = new InstanceService(paths)
+  const service = getServices().instances
 
   router.handle('instances:list', null, async () => service.list())
   router.handle('instances:create', S.InstanceCreateSchema, async (input: any) => service.create(input))

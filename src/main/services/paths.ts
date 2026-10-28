@@ -26,11 +26,12 @@ export class PathsImpl implements Paths {
   get settingsFile(): string { return path.join(this.userData, 'settings.json') }
   get accountsFile(): string { return path.join(this.userData, 'accounts.json') }
   get instancesDir(): string { return path.join(this.userData, 'instances') }
-  get sharedDir(): string { return path.join(this._gameRoot, 'shared') }
-  get versionsDir(): string { return path.join(this.sharedDir, 'versions') }
-  get librariesDir(): string { return path.join(this.sharedDir, 'libraries') }
-  get assetsDir(): string { return path.join(this.sharedDir, 'assets') }
-  get runtimeDir(): string { return path.join(this.sharedDir, 'java') }
+  // MinecraftFolder (XMCL) expects versions/libraries/assets directly under the game root.
+  get sharedDir(): string { return this._gameRoot }
+  get versionsDir(): string { return path.join(this._gameRoot, 'versions') }
+  get librariesDir(): string { return path.join(this._gameRoot, 'libraries') }
+  get assetsDir(): string { return path.join(this._gameRoot, 'assets') }
+  get runtimeDir(): string { return path.join(this._gameRoot, 'runtime') }
   get cacheDir(): string { return path.join(this.userData, 'cache') }
   get logsDir(): string { return path.join(this.userData, 'logs') }
   instanceDir(id: string): string { return path.join(this.userData, 'instances', id) }
@@ -53,4 +54,16 @@ export class PathsImpl implements Paths {
 
 export function createPaths(userData: string, gameRoot: string): Paths {
   return new PathsImpl(userData, gameRoot)
+}
+
+let activePaths: Paths | null = null
+
+/** Set once during app startup; services should use getPaths() afterwards. */
+export function setActivePaths(p: Paths): void {
+  activePaths = p
+}
+
+export function getPaths(): Paths {
+  if (!activePaths) throw new Error('PATHS_NOT_READY')
+  return activePaths
 }
