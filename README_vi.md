@@ -1,6 +1,10 @@
 # HiyoLauncher
 
 <p align="center">
+  <strong>Tiếng Việt</strong> · <a href="README.md"><strong>Read in English →</strong></a>
+</p>
+
+<p align="center">
   <img src="README-banner.svg" alt="HiyoLauncher banner" width="100%" />
 </p>
 
@@ -10,10 +14,6 @@
 
 <p align="center">
   <strong>Launcher Minecraft nhanh, đẹp, cá nhân hoá sâu và tích hợp sẵn Modrinth.</strong>
-</p>
-
-<p align="center">
-  <a href="README.md">English</a> · <a href="README_vi.md">Tiếng Việt</a>
 </p>
 
 <p align="center">
@@ -142,7 +142,3 @@ Xem [`CONTRIBUTING.md`](CONTRIBUTING.md). Vui lòng mở issue theo template và
 ## Giấy phép
 
 [MIT](LICENSE) © 2026 HiyoLauncher contributors.
-
----
-
-**[Read this in English →](README.md)**
