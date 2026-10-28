@@ -217,6 +217,8 @@ section { padding: 62px 0; }
 .dl small { color: var(--muted); }
 .dl p { color: var(--muted); font-size: 13px; margin: 0; flex: 1; }
 .dl .btn { width: 100%; }
+.dl-actions { display: flex; gap: 8px; }
+.dl-actions .btn { flex: 1; min-width: 0; padding-inline: 10px; }
 .note { color: var(--muted); font-size: 12.5px; margin-top: 14px; }
 .note code { color: var(--accent-2); }
 
