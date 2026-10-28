@@ -141,6 +141,47 @@ export interface InstalledContent {
   installedAt: number
 }
 
+export interface InstanceFileEntry {
+  name: string
+  path: string
+  isDirectory: boolean
+  size: number
+  modifiedAt: number
+  managed: boolean
+}
+
+export interface ScreenshotEntry {
+  file: string
+  name: string
+  sizeBytes: number
+  createdAt: number
+}
+
+export interface WorldSummary {
+  folder: string
+  name: string
+  lastPlayedAt?: number
+  gameMode?: 'survival' | 'creative' | 'adventure' | 'spectator'
+  hardcore: boolean
+  version?: string
+  sizeBytes: number
+}
+
+export interface WorldBackup {
+  file: string
+  world: string
+  createdAt: number
+  sizeBytes: number
+}
+
+export interface WorldBackupProgress {
+  instanceId: string
+  world: string
+  phase: 'compress' | 'extract'
+  current: number
+  total: number
+}
+
 export type ProjectType = 'mod' | 'modpack' | 'resourcepack' | 'shader' | 'datapack' | 'plugin'
 
 export interface MrFile {

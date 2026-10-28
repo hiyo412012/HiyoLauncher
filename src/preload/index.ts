@@ -117,6 +117,29 @@ const api: HiyoApi = {
       return unsub
     },
   },
+  files: {
+    list: (instanceId, path) => invoke(IPC.files.list, { instanceId, path }),
+    import: (instanceId, path) => invoke(IPC.files.import, { instanceId, path }),
+    rename: (instanceId, path, newName) => invoke(IPC.files.rename, { instanceId, path, newName }),
+    trash: (instanceId, path) => invoke(IPC.files.trash, { instanceId, path }),
+    open: (instanceId, path) => invoke(IPC.files.open, { instanceId, path }),
+    reveal: (instanceId, path) => invoke(IPC.files.reveal, { instanceId, path }),
+  },
+  worlds: {
+    list: (instanceId) => invoke(IPC.worlds.list, { instanceId }),
+    rename: (instanceId, folder, name) => invoke(IPC.worlds.rename, { instanceId, folder, name }),
+    backup: (instanceId, folder) => invoke(IPC.worlds.backup, { instanceId, folder }),
+    backups: (instanceId) => invoke(IPC.worlds.backups, { instanceId }),
+    restore: (instanceId, file) => invoke(IPC.worlds.restore, { instanceId, file }),
+    remove: (instanceId, folder, backupFirst) =>
+      invoke(IPC.worlds.remove, { instanceId, folder, backupFirst }),
+    removeBackup: (instanceId, file) => invoke(IPC.worlds.removeBackup, { instanceId, file }),
+  },
+  screenshots: {
+    list: (instanceId) => invoke(IPC.screenshots.list, { instanceId }),
+    copy: (instanceId, file) => invoke(IPC.screenshots.copy, { instanceId, file }),
+    trash: (instanceId, file) => invoke(IPC.screenshots.trash, { instanceId, file }),
+  },
   misc: {
     discordSet: (enabled) => invoke(IPC.misc.discordSet, { enabled }),
     updaterCheck: () => invoke(IPC.misc.updaterCheck),
@@ -128,6 +151,7 @@ const api: HiyoApi = {
   onGameExit: (cb) => sub(EVENTS.gameExit, cb),
   onAuthDeviceCode: (cb) => sub(EVENTS.authDeviceCode, cb),
   onUpdaterStatus: (cb) => sub(EVENTS.updaterStatus, cb),
+  onWorldBackupProgress: (cb) => sub(EVENTS.worldBackupProgress, cb),
 }
 
 contextBridge.exposeInMainWorld('hiyo', api)

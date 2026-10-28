@@ -231,6 +231,26 @@ function requiredJavaMajor(instance: Instance, resolved: any): number {
   return resolved?.javaVersion?.majorVersion ?? 17
 }
 
+export function applyQuickPlay<T extends Record<string, any>>(
+  options: T,
+  quickPlay?: { type: 'singleplayer' | 'multiplayer' | 'realms'; value?: string },
+): T {
+  if (!quickPlay?.value) return options
+  const next: Record<string, any> = { ...options }
+  if (quickPlay.type === 'singleplayer') {
+    const args = Array.isArray(next.extraMCArgs) ? [...next.extraMCArgs] : []
+    args.push('--quickPlaySingleplayer', quickPlay.value)
+    next.extraMCArgs = args
+  } else if (quickPlay.type === 'multiplayer') {
+    next.quickPlayMultiplayer = quickPlay.value
+  } else if (quickPlay.type === 'realms') {
+    const args = Array.isArray(next.extraMCArgs) ? [...next.extraMCArgs] : []
+    args.push('--quickPlayRealms', quickPlay.value)
+    next.extraMCArgs = args
+  }
+  return next as T
+}
+
 export async function launchInstance(
   req: { instanceId: string; accountId?: string; server?: { host: string; port?: number }; quickPlay?: { type: 'singleplayer' | 'multiplayer' | 'realms'; value?: string } },
   opts?: { paths?: Paths },
@@ -301,11 +321,11 @@ export async function launchInstance(
   if (req.server) {
     launchOpts.server = { ip: req.server.host, port: req.server.port }
   }
-  if (req.quickPlay) {
-    if (req.quickPlay.type === 'multiplayer' && req.quickPlay.value) {
-      launchOpts.quickPlayMultiplayer = req.quickPlay.value
-    }
-  }
+  const quickPlay = req.quickPlay
+    ? { type: req.quickPlay.type, value: req.quickPlay.value }
+    : undefined
+  const launchOptions = applyQuickPlay(launchOpts as Record<string, any>, quickPlay)
+
   // ensure instance dir exists
   await fs.mkdir(paths.instanceDir(instance.id), { recursive: true })
   for (const f of ['mods', 'config', 'saves', 'resourcepacks', 'shaderpacks', 'datapacks', 'logs']) {
@@ -316,7 +336,7 @@ export async function launchInstance(
 
   let proc: any
   try {
-    proc = await xmclLaunch(launchOpts)
+    proc = await xmclLaunch(launchOptions as any)
   } catch (e: any) {
     const details = Array.isArray(e?.errors)
       ? e.errors.map((inner: any) => inner?.message ?? String(inner)).join(' | ')

@@ -20,6 +20,11 @@
   SettingsPatch,
   UpdaterStatus,
   InstalledContent,
+  InstanceFileEntry,
+  ScreenshotEntry,
+  WorldBackup,
+  WorldBackupProgress,
+  WorldSummary,
   ContentInstallRequest,
   ContentToggleRequest,
   ContentRemoveRequest,
@@ -113,6 +118,28 @@ export const IPC = {
     export: 'logs:export',
     tail: 'logs:tail',
   },
+  files: {
+    list: 'files:list',
+    import: 'files:import',
+    rename: 'files:rename',
+    trash: 'files:trash',
+    open: 'files:open',
+    reveal: 'files:reveal',
+  },
+  worlds: {
+    list: 'worlds:list',
+    rename: 'worlds:rename',
+    backup: 'worlds:backup',
+    backups: 'worlds:backups',
+    restore: 'worlds:restore',
+    remove: 'worlds:remove',
+    removeBackup: 'worlds:removeBackup',
+  },
+  screenshots: {
+    list: 'screenshots:list',
+    copy: 'screenshots:copy',
+    trash: 'screenshots:trash',
+  },
   misc: {
     discordSet: 'misc:discordSet',
     updaterCheck: 'misc:updaterCheck',
@@ -128,6 +155,7 @@ export const EVENTS = {
   authDeviceCode: 'auth:device-code',
   updaterStatus: 'updater:status',
   logTail: 'logs:tail:data',
+  worldBackupProgress: 'worlds:backup-progress',
 } as const
 
 export type Unsubscribe = () => void
@@ -216,6 +244,28 @@ export interface HiyoApi {
     export(path: string): Promise<string>
     tail(instanceId: string, cb: (chunk: string) => void): Unsubscribe
   }
+  files: {
+    list(instanceId: string, path?: string): Promise<InstanceFileEntry[]>
+    import(instanceId: string, path?: string): Promise<InstanceFileEntry[]>
+    rename(instanceId: string, path: string, newName: string): Promise<string>
+    trash(instanceId: string, path: string): Promise<void>
+    open(instanceId: string, path: string): Promise<void>
+    reveal(instanceId: string, path: string): Promise<void>
+  }
+  worlds: {
+    list(instanceId: string): Promise<WorldSummary[]>
+    rename(instanceId: string, folder: string, name: string): Promise<void>
+    backup(instanceId: string, folder: string): Promise<WorldBackup>
+    backups(instanceId: string): Promise<WorldBackup[]>
+    restore(instanceId: string, file: string): Promise<void>
+    remove(instanceId: string, folder: string, backupFirst?: boolean): Promise<void>
+    removeBackup(instanceId: string, file: string): Promise<void>
+  }
+  screenshots: {
+    list(instanceId: string): Promise<ScreenshotEntry[]>
+    copy(instanceId: string, file: string): Promise<void>
+    trash(instanceId: string, file: string): Promise<void>
+  }
   misc: {
     discordSet(enabled: boolean): Promise<void>
     updaterCheck(): Promise<UpdaterStatus>
@@ -227,5 +277,6 @@ export interface HiyoApi {
   onGameExit(cb: (payload: { instanceId: string; code: number | null }) => void): Unsubscribe
   onAuthDeviceCode(cb: (info: DeviceCodeInfo) => void): Unsubscribe
   onUpdaterStatus(cb: (s: UpdaterStatus) => void): Unsubscribe
+  onWorldBackupProgress(cb: (p: WorldBackupProgress) => void): Unsubscribe
 }
 

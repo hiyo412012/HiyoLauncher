@@ -8,6 +8,9 @@ import { registerContentIpc } from './domains/content'
 import { registerServersIpc } from './domains/servers'
 import { registerSkinsIpc } from './domains/skins'
 import { registerLogsIpc } from './domains/logs'
+import { registerFilesIpc } from './domains/files'
+import { registerWorldsIpc } from './domains/worlds'
+import { registerScreenshotsIpc } from './domains/screenshots'
 import { registerMiscIpc } from './domains/misc'
 
 export function registerIpc(): void {
@@ -21,5 +24,8 @@ export function registerIpc(): void {
   registerServersIpc(router)
   registerSkinsIpc(router)
   registerLogsIpc(router)
+  registerFilesIpc(router)
+  registerWorldsIpc(router)
+  registerScreenshotsIpc(router)
   registerMiscIpc(router)
 }

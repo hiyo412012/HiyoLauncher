@@ -32,6 +32,7 @@
 |---|---|
 | Fast & stable | Instant UI feedback, parallel downloads, SHA1 verification, atomic installs, retry with backoff, repair instance, crash diagnostics |
 | Modrinth content | Search & install mods, modpacks, shaders and resource packs directly from Modrinth, with dependency resolution and one-click updates |
+| Instance workspace | Worlds with backups and restore, screenshot gallery, file browser and per-instance logs, all inside the launcher |
 | Mod loaders | Fabric, Quilt, Forge and NeoForge installers, matched to your Minecraft version |
 | Accounts | Microsoft login via device code, plus offline accounts for offline/LAN servers (with disclaimer) |
 | Personalization | Pastel Ocean default theme, light/dark modes, custom accent, backgrounds, density, font scale, language (Vietnamese/English), per-instance covers |

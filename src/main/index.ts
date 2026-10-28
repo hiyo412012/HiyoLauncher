@@ -5,9 +5,11 @@ import { registerIpc } from './ipc'
 import { createMainWindow } from './window'
 import { initUpdater } from './services/updater'
 import { syncDiscord } from './services/discord'
+import { registerMediaProtocol, registerMediaScheme } from './media'
 
 // Must run before any app.getPath('userData') call.
 app.setName('HiyoLauncher')
+registerMediaScheme()
 if (process.platform === 'win32') app.setAppUserModelId('org.hiyolauncher.app')
 Menu.setApplicationMenu(null)
 
@@ -41,6 +43,7 @@ process.on('unhandledRejection', (reason: any) => {
 app.whenReady().then(async () => {
   await initServices()
   getLogger().info('app ready', { version: app.getVersion() })
+  registerMediaProtocol()
   registerIpc()
   mainWindow = createMainWindow()
   setTimeout(() => {

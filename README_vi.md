@@ -32,6 +32,7 @@
 |---|---|
 | Nhanh & ổn định | UI phản hồi tức thì, tải song song, kiểm tra SHA1, cài đặt atomic, retry có backoff, sửa chữa instance, chẩn đoán crash |
 | Nội dung Modrinth | Tìm & cài mod, modpack, shader, resource pack trực tiếp từ Modrinth, tự resolve dependency và cập nhật một click |
+| Không gian bản cài | Thế giới kèm sao lưu/khôi phục, thư viện ảnh chụp, trình duyệt tệp và log riêng từng bản cài, tất cả trong launcher |
 | Mod loader | Fabric, Quilt, Forge và NeoForge, tự khớp với phiên bản Minecraft |
 | Tài khoản | Đăng nhập Microsoft bằng device code, và tài khoản offline cho server offline/LAN (có disclaimer) |
 | Cá nhân hoá | Theme mặc định Pastel Ocean, sáng/tối, accent tuỳ chỉnh, nền ảnh/video, mật độ, cỡ chữ, ngôn ngữ Việt/Anh, cover riêng từng instance |

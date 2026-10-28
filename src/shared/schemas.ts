@@ -153,6 +153,60 @@ export const LogsAnalyzeSchema = z.object({ path: z.string().min(1) })
 export const LogsExportSchema = z.object({ path: z.string().min(1) })
 export const LogsTailSchema = z.object({ instanceId: idSchema })
 
+const relativePathSchema = z.string().max(1024).optional()
+
+export const FilesListSchema = z.object({
+  instanceId: idSchema,
+  path: relativePathSchema,
+})
+export const FilesImportSchema = z.object({
+  instanceId: idSchema,
+  path: relativePathSchema,
+})
+export const FilesRenameSchema = z.object({
+  instanceId: idSchema,
+  path: z.string().min(1).max(1024),
+  newName: z.string().min(1).max(255),
+})
+export const FilesTrashSchema = z.object({
+  instanceId: idSchema,
+  path: z.string().min(1).max(1024),
+})
+export const FilesOpenSchema = FilesTrashSchema
+export const FilesRevealSchema = FilesTrashSchema
+
+export const WorldsListSchema = z.object({ instanceId: idSchema })
+export const WorldsRenameSchema = z.object({
+  instanceId: idSchema,
+  folder: z.string().min(1).max(128),
+  name: z.string().min(1).max(64),
+})
+export const WorldsBackupSchema = z.object({
+  instanceId: idSchema,
+  folder: z.string().min(1).max(128),
+})
+export const WorldsBackupsSchema = z.object({ instanceId: idSchema })
+export const WorldsRestoreSchema = z.object({
+  instanceId: idSchema,
+  file: z.string().min(1),
+})
+export const WorldsRemoveBackupSchema = z.object({
+  instanceId: idSchema,
+  file: z.string().min(1),
+})
+export const WorldsRemoveSchema = z.object({
+  instanceId: idSchema,
+  folder: z.string().min(1).max(128),
+  backupFirst: z.boolean().optional().default(true),
+})
+
+export const ScreenshotsListSchema = z.object({ instanceId: idSchema })
+export const ScreenshotsCopySchema = z.object({
+  instanceId: idSchema,
+  file: z.string().min(1).max(255),
+})
+export const ScreenshotsTrashSchema = ScreenshotsCopySchema
+
 export const AppOpenExternalSchema = z.object({ url: z.string().url() })
 export const AppPickDirectorySchema = z.object({}).optional()
 export const AppPickFileSchema = z.object({ filters: z.array(z.object({ name: z.string(), extensions: z.array(z.string()) })).optional() })

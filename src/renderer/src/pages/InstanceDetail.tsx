@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from '@/lib/api'
@@ -8,24 +8,50 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
-import { EmptyState } from '@/components/ui/empty-state'
-import { cn } from '@/lib/utils'
-import { Play, Square, Trash2, Wrench, FolderOpen, Pencil, ImageIcon } from 'lucide-react'
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import ContentTab from '@/components/instance/ContentTab'
+import WorldsTab from '@/components/instance/WorldsTab'
+import ScreenshotsTab from '@/components/instance/ScreenshotsTab'
+import FilesTab from '@/components/instance/FilesTab'
+import InstanceLogsTab from '@/components/instance/InstanceLogsTab'
+import { formatDate, formatPlaytime, formatRelativeTime } from '@/lib/format'
+import {
+  Boxes,
+  Clock,
+  FolderOpen,
+  Globe,
+  Image as ImageIcon,
+  LayoutDashboard,
+  Pencil,
+  Play,
+  Settings as SettingsIcon,
+  Square,
+  Terminal,
+  Timer,
+  Trash2,
+  Wrench,
+} from 'lucide-react'
 import { toast } from 'sonner'
-import type { Instance, InstalledContent, JavaInfo } from '@shared/types'
+import type { Instance, JavaInfo } from '@shared/types'
 
 export default function InstanceDetail() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
   const qc = useQueryClient()
   const { setSelectedInstance } = useAppStore()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const tab = searchParams.get('tab') ?? 'overview'
+  const setTab = (value: string) => {
+    const next = new URLSearchParams(searchParams)
+    next.set('tab', value)
+    setSearchParams(next, { replace: true })
+  }
 
   const instancesQuery = useQuery({ queryKey: ['instances'], queryFn: () => api.instances.list() })
   const instance = (instancesQuery.data ?? []).find((i) => i.id === id)
@@ -113,95 +139,80 @@ export default function InstanceDetail() {
     },
   })
 
-  const contentPath = (c: InstalledContent) => {
-    const folder =
-      c.kind === 'mod'
-        ? 'mods'
-        : c.kind === 'resourcepack'
-          ? 'resourcepacks'
-          : c.kind === 'shader'
-            ? 'shaderpacks'
-            : 'datapacks'
-    return `${folder}/${c.filename}`
-  }
-
-  const toggleMutation = useMutation({
-    mutationFn: (c: InstalledContent) =>
-      api.content.toggle({ instanceId: id!, path: contentPath(c), enabled: !c.enabled }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['content', id] }),
-  })
-
-  const removeContentMutation = useMutation({
-    mutationFn: (c: InstalledContent) =>
-      api.content.remove({ instanceId: id!, path: contentPath(c) }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['content', id] }),
-  })
-
   const [running, setRunning] = useState(false)
   // track running via game state
   React.useEffect(() => {
+    let active = true
+    api.launch
+      .status()
+      .then((states) => {
+        if (active) setRunning(states.some((state) => state.instanceId === id))
+      })
+      .catch(() => {})
     const unsub = api.onGameState((s) => {
-      if (s.instanceId === id) setRunning(s.phase === 'running' || s.phase === 'launching' || s.phase === 'downloading' || s.phase === 'preparing')
+      if (s.instanceId === id)
+        setRunning(
+          s.phase === 'running' ||
+            s.phase === 'launching' ||
+            s.phase === 'downloading' ||
+            s.phase === 'preparing',
+        )
     })
-    return unsub
+    return () => {
+      active = false
+      unsub()
+    }
   }, [id])
 
   if (!instance) {
     return <div className="opacity-70">{t('common.loading', { defaultValue: 'Loading...' })}</div>
   }
 
-  const mods = (contentQuery.data ?? []).filter((c) => c.kind === 'mod')
-  const resourcePacks = (contentQuery.data ?? []).filter((c) => c.kind === 'resourcepack')
-  const shaders = (contentQuery.data ?? []).filter((c) => c.kind === 'shader')
-
-  const renderContentList = (items: InstalledContent[], kindLabel: string, browseKind: string) => (
-    <div className="space-y-3">
-      <div className="flex justify-end">
-        <Button variant="outline" size="sm" onClick={() => navigate(`/browse?instance=${id}&kind=${browseKind}`)}>
-          {t('content.browse', { defaultValue: 'Browse' })} {kindLabel}
-        </Button>
-      </div>
-      {items.length === 0 ? (
-        <EmptyState
-          title={t('content.emptyTitle', { defaultValue: 'No items' })}
-          description={t('content.emptyDesc', { defaultValue: 'Nothing installed yet.' })}
-        />
-      ) : (
-        <div className="space-y-2">
-          {items.map((c) => (
-            <Card key={c.id}>
-              <CardContent className="py-3 flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="font-medium truncate">{c.filename}</div>
-                  <div className="text-xs opacity-70">{c.versionNumber ?? ''} {c.enabled ? '' : `(${t('content.disabled', { defaultValue: 'disabled' })})`}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch checked={c.enabled} onCheckedChange={() => toggleMutation.mutate(c)} />
-                  <Button variant="ghost" size="icon" onClick={() => removeContentMutation.mutate(c)}>
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
-  )
+  const contentItems = contentQuery.data ?? []
+  const modCount = contentItems.filter((item) => item.kind === 'mod').length
+  const tabs = [
+    { value: 'overview', label: t('tab.overview', { defaultValue: 'Overview' }), icon: LayoutDashboard },
+    { value: 'content', label: t('tab.content', { defaultValue: 'Content' }), icon: Boxes },
+    { value: 'worlds', label: t('tab.worlds', { defaultValue: 'Worlds' }), icon: Globe },
+    { value: 'screenshots', label: t('tab.screenshots', { defaultValue: 'Screenshots' }), icon: ImageIcon },
+    { value: 'files', label: t('tab.files', { defaultValue: 'Files' }), icon: FolderOpen },
+    { value: 'logs', label: t('tab.logs', { defaultValue: 'Logs' }), icon: Terminal },
+    { value: 'settings', label: t('tab.settings', { defaultValue: 'Settings' }), icon: SettingsIcon },
+  ]
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--accent)]/40 to-[var(--surface)] flex items-center justify-center text-2xl font-bold">
-            {instance.name.charAt(0).toUpperCase()}
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-2xl)] bg-gradient-to-br from-[color-mix(in_srgb,var(--accent)_40%,transparent)] to-[var(--surface)] text-2xl font-bold">
+            {instance.icon ? (
+              <img src={instance.icon} alt="" className="h-full w-full object-cover" />
+            ) : (
+              instance.name.charAt(0).toUpperCase()
+            )}
           </div>
-          <div>
-            <h1 className="text-2xl font-bold">{instance.name}</h1>
-            <div className="flex items-center gap-2 mt-1">
+          <div className="min-w-0">
+            <h1 className="truncate text-2xl font-bold">{instance.name}</h1>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
               <Badge>{instance.mcVersion}</Badge>
               <Badge variant="secondary">{instance.loader}</Badge>
               {instance.loaderVersion && <Badge variant="outline">{instance.loaderVersion}</Badge>}
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--muted)]">
+              <span className="inline-flex items-center gap-1">
+                <Timer className="h-3.5 w-3.5" />
+                {formatPlaytime(instance.playTimeMs)}
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
+                {instance.lastPlayedAt
+                  ? formatRelativeTime(instance.lastPlayedAt, i18n.language)
+                  : t('instance.neverPlayed', { defaultValue: 'Never played' })}
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <Boxes className="h-3.5 w-3.5" />
+                {t('instance.modCount', { count: modCount, defaultValue: `${modCount} mods` })}
+              </span>
             </div>
           </div>
         </div>
@@ -248,28 +259,36 @@ export default function InstanceDetail() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          <Button variant="outline" size="icon" onClick={() => api.instances.openFolder(instance.id)} aria-label={t('instance.openFolder', { defaultValue: 'Open folder' })}>
+            <FolderOpen className="w-4 h-4" />
+          </Button>
           {running ? (
-            <Button variant="destructive" onClick={() => stopMutation.mutate()} disabled={stopMutation.isPending}>
-              <Square className="w-4 h-4 mr-1" /> {t('common.stop', { defaultValue: 'Stop' })}
+            <Button variant="destructive" size="lg" onClick={() => stopMutation.mutate()} disabled={stopMutation.isPending}>
+              <Square className="w-4 h-4" /> {t('common.stop', { defaultValue: 'Stop' })}
             </Button>
           ) : (
-            <Button onClick={() => launchMutation.mutate()} disabled={launchMutation.isPending}>
-              <Play className="w-4 h-4 mr-1" /> {launchMutation.isPending ? t('home.launching', { defaultValue: 'Launching...' }) : t('common.play', { defaultValue: 'Play' })}
+            <Button size="lg" onClick={() => launchMutation.mutate()} disabled={launchMutation.isPending}>
+              <Play className="w-4 h-4" /> {launchMutation.isPending ? t('home.launching', { defaultValue: 'Launching...' }) : t('common.play', { defaultValue: 'Play' })}
             </Button>
           )}
         </div>
       </div>
 
-      <Tabs defaultValue="overview">
-        <TabsList>
-          <TabsTrigger value="overview">{t('tab.overview', { defaultValue: 'Overview' })}</TabsTrigger>
-          <TabsTrigger value="mods">{t('tab.mods', { defaultValue: 'Mods' })} ({mods.length})</TabsTrigger>
-          <TabsTrigger value="resourcepacks">{t('tab.resourcePacks', { defaultValue: 'Resource packs' })}</TabsTrigger>
-          <TabsTrigger value="shaders">{t('tab.shaders', { defaultValue: 'Shaders' })}</TabsTrigger>
-          <TabsTrigger value="settings">{t('tab.settings', { defaultValue: 'Settings' })}</TabsTrigger>
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList className="h-auto w-fit max-w-full justify-start overflow-x-auto rounded-full bg-[var(--surface-2)] p-1">
+          {tabs.map(({ value, label, icon: Icon }) => (
+            <TabsTrigger
+              key={value}
+              value={value}
+              className="gap-2 rounded-full px-3.5 py-2 data-[state=active]:bg-[var(--accent)] data-[state=active]:text-[var(--bg)]"
+            >
+              <Icon className="h-4 w-4" />
+              <span className="hidden sm:inline">{label}</span>
+            </TabsTrigger>
+          ))}
         </TabsList>
 
-        <TabsContent value="overview">
+        <TabsContent value="overview" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card>
               <CardHeader><CardTitle>{t('overview.details', { defaultValue: 'Details' })}</CardTitle></CardHeader>
@@ -277,9 +296,9 @@ export default function InstanceDetail() {
                 <div className="flex justify-between"><span className="opacity-70">MC</span><span>{instance.mcVersion}</span></div>
                 <div className="flex justify-between"><span className="opacity-70">Loader</span><span>{instance.loader} {instance.loaderVersion ?? ''}</span></div>
                 <div className="flex justify-between"><span className="opacity-70">Memory</span><span>{Math.round((instance.memoryMb ?? 4096) / 1024)}GB</span></div>
-                <div className="flex justify-between"><span className="opacity-70">Last played</span><span>{instance.lastPlayedAt ? new Date(instance.lastPlayedAt).toLocaleString() : '-'}</span></div>
-                <div className="flex justify-between"><span className="opacity-70">Playtime</span><span>{Math.round(instance.playTimeMs / 60000)}m</span></div>
-                <div className="flex justify-between"><span className="opacity-70">Mods</span><span>{mods.length}</span></div>
+                <div className="flex justify-between"><span className="opacity-70">Last played</span><span>{instance.lastPlayedAt ? formatDate(instance.lastPlayedAt, i18n.language, { dateStyle: 'medium', timeStyle: 'short' }) : '-'}</span></div>
+                <div className="flex justify-between"><span className="opacity-70">Playtime</span><span>{formatPlaytime(instance.playTimeMs)}</span></div>
+                <div className="flex justify-between"><span className="opacity-70">Mods</span><span>{modCount}</span></div>
               </CardContent>
             </Card>
             <Card>
@@ -296,11 +315,27 @@ export default function InstanceDetail() {
           </div>
         </TabsContent>
 
-        <TabsContent value="mods">{renderContentList(mods, 'Mods', 'mod')}</TabsContent>
-        <TabsContent value="resourcepacks">{renderContentList(resourcePacks, 'Resource packs', 'resourcepack')}</TabsContent>
-        <TabsContent value="shaders">{renderContentList(shaders, 'Shaders', 'shader')}</TabsContent>
+        <TabsContent value="content" className="mt-4">
+          <ContentTab instanceId={id!} />
+        </TabsContent>
 
-        <TabsContent value="settings">
+        <TabsContent value="worlds" className="mt-4">
+          <WorldsTab instanceId={id!} running={running} />
+        </TabsContent>
+
+        <TabsContent value="screenshots" className="mt-4">
+          <ScreenshotsTab instanceId={id!} />
+        </TabsContent>
+
+        <TabsContent value="files" className="mt-4">
+          <FilesTab instanceId={id!} />
+        </TabsContent>
+
+        <TabsContent value="logs" className="mt-4">
+          <InstanceLogsTab instanceId={id!} />
+        </TabsContent>
+
+        <TabsContent value="settings" className="mt-4">
           <div className="space-y-6 max-w-2xl">
             <Card>
               <CardHeader><CardTitle>{t('settings.memory', { defaultValue: 'Memory' })}</CardTitle></CardHeader>
