@@ -1,6 +1,6 @@
 {
   "name": "hiyolauncher",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A fast, beautiful and personalizable Minecraft launcher with Modrinth built in.",
   "main": "./out/main/index.js",
   "type": "module",
