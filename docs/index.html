@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HiyoLauncher — Launcher Minecraft nhanh, đẹp, cá nhân hoá</title>
+  <meta name="description" content="HiyoLauncher: launcher Minecraft mã nguồn mở, tích hợp Modrinth, Fabric/Quilt/Forge/NeoForge, tài khoản Microsoft và offline, giao diện Pastel Ocean." />
+  <meta property="og:title" content="HiyoLauncher — Your world. Your launcher." />
+  <meta property="og:description" content="Launcher Minecraft hiện đại, mã nguồn mở, tích hợp Modrinth và cá nhân hoá sâu." />
+  <meta property="og:image" content="screenshots/home.png" />
+  <link rel="icon" href="assets/icon.png" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <img src="assets/logo.svg" alt="" />
+        <span>HiyoLauncher</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Tính năng</a>
+        <a href="#screenshots">Ảnh chụp</a>
+        <a href="#download">Tải về</a>
+        <a href="#notes">Lưu ý</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost btn-sm" href="https://github.com/hiyo412012/HiyoLauncher" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn btn-primary btn-sm" href="#download">Tải ngay</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="pill"><span class="dot"></span> Mã nguồn mở · MIT · v1.0.0</span>
+          <h1>Thế giới của bạn.<br /><span class="grad">Launcher của bạn.</span></h1>
+          <p class="lead">
+            HiyoLauncher là launcher Minecraft hiện đại: cài mod, modpack, shader và resource pack
+            trực tiếp từ Modrinth, hỗ trợ Fabric/Quilt/Forge/NeoForge, tài khoản Microsoft và offline,
+            cùng giao diện Pastel Ocean cá nhân hoá sâu.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://github.com/hiyo412012/HiyoLauncher/releases/download/v1.0.0/HiyoLauncher-1.0.0-win-x64.exe">
+              Tải cho Windows
+            </a>
+            <a class="btn btn-ghost" href="https://github.com/hiyo412012/HiyoLauncher/releases">Tất cả bản tải</a>
+          </div>
+          <div class="hero-meta">
+            <span><b class="check">✓</b> Windows · macOS · Linux</span>
+            <span><b class="check">✓</b> Không telemetry</span>
+            <span><b class="check">✓</b> Dữ liệu lưu local</span>
+          </div>
+        </div>
+        <div class="shot-frame">
+          <div class="shot-glow"></div>
+          <img src="screenshots/home.png" alt="Giao diện HiyoLauncher" />
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="stats reveal">
+        <div class="stat"><b>&lt; 100ms</b><span>phản hồi giao diện</span></div>
+        <div class="stat"><b>4</b><span>mod loader: Fabric, Quilt, Forge, NeoForge</span></div>
+        <div class="stat"><b>Modrinth</b><span>mod, modpack, shader, resource pack</span></div>
+        <div class="stat"><b>0</b><span>telemetry — mọi thứ ở máy bạn</span></div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Tính năng</div>
+            <h2>Mọi thứ bạn cần, trong một launcher</h2>
+            <p>Không còn cảnh mở 5 công cụ khác nhau để cài mod, sửa Java hay tìm crash report.</p>
+          </div>
+        </div>
+
+        <div class="grid features">
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg></div>
+            <h3>Nhanh &amp; ổn định</h3>
+            <p>Tải song song, kiểm SHA1, ghi file atomic, retry có backoff. Instance không bao giờ bị hỏng dở.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5M12 21v-8"/></svg></div>
+            <h3>Modrinth trong launcher</h3>
+            <p>Tìm, cài, cập nhật mod và modpack ngay trong app. Tự resolve dependency và kiểm tra phiên bản.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></div>
+            <h3>Mọi mod loader</h3>
+            <p>Fabric, Quilt, Forge và NeoForge — tự chọn phiên bản loader phù hợp với Minecraft.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.8-4 4.5-6 8-6s6.2 2 8 6"/></svg></div>
+            <h3>Tài khoản linh hoạt</h3>
+            <p>Microsoft device-code login và tài khoản offline cho server LAN/offline. Token được mã hoá bằng OS.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 0 18c1.7 0 2.5-1.2 2.5-2.5 0-2 1.5-2.5 3-2.5H19a2 2 0 0 0 2-2A9 9 0 0 0 12 3Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="9.5" cy="6.5" r="1"/><circle cx="14.5" cy="6.5" r="1"/><circle cx="17" cy="10" r="1"/></svg></div>
+            <h3>Cá nhân hoá sâu</h3>
+            <p>Theme, accent color, nền ảnh/video, blur, mật độ, font, sidebar, cover riêng từng instance.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 7v5c0 5 3.4 8 8 9 4.6-1 8-4 8-9V7l-8-4Z"/><path d="m8.5 12 2.3 2.3 4.7-4.6"/></svg></div>
+            <h3>Chẩn đoán crash</h3>
+            <p>Nhận diện OOM, sai Java, thiếu/trùng mod, lỗi GLFW và đưa gợi ý sửa cụ thể thay vì log thô.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></div>
+            <h3>Server &amp; skin</h3>
+            <p>Đọc servers.dat, ping trạng thái, quick join đúng tài khoản, preview skin 3D và upload skin.</p>
+          </article>
+          <article class="card reveal">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></div>
+            <h3>Open source</h3>
+            <p>MIT, mã nguồn công khai trên GitHub. Không telemetry, không khoá tính năng, không quảng cáo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Ảnh chụp</div>
+            <h2>Giao diện Pastel Ocean</h2>
+            <p>Tối, dịu mắt, nhiều khoảng thở. Mọi theme, màu nhấn và nền đều đổi được trong Cài đặt.</p>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/hiyo412012/HiyoLauncher/tree/main/docs/screenshots" target="_blank" rel="noreferrer">Xem tất cả</a>
+        </div>
+
+        <div class="gallery">
+          <button class="reveal" data-full="screenshots/home.png" data-caption="Trang chủ · Pastel Ocean">
+            <img src="screenshots/home.png" alt="Trang chủ HiyoLauncher" loading="lazy" />
+            <figcaption>Trang chủ <span>Instance hero, Play một click, hoạt động gần đây</span></figcaption>
+          </button>
+          <button class="reveal" data-full="screenshots/browse.png" data-caption="Modrinth · Duyệt nội dung">
+            <img src="screenshots/browse.png" alt="Duyệt mod trên Modrinth" loading="lazy" />
+            <figcaption>Duyệt nội dung <span>Tìm mod, shader, resource pack với filter loader/version</span></figcaption>
+          </button>
+          <button class="reveal" data-full="screenshots/instances.png" data-caption="Bản cài">
+            <img src="screenshots/instances.png" alt="Danh sách bản cài" loading="lazy" />
+            <figcaption>Bản cài <span>Nhiều instance độc lập, mỗi instance một bộ mod</span></figcaption>
+          </button>
+          <button class="reveal" data-full="screenshots/modpacks.png" data-caption="Modpack">
+            <img src="screenshots/modpacks.png" alt="Modpack trên Modrinth" loading="lazy" />
+            <figcaption>Modpack <span>Cài modpack tuyển chọn bằng một click</span></figcaption>
+          </button>
+          <button class="reveal" data-full="screenshots/settings.png" data-caption="Cài đặt">
+            <img src="screenshots/settings.png" alt="Cài đặt giao diện" loading="lazy" />
+            <figcaption>Cài đặt <span>Theme, màu nhấn, nền, mật độ, font, ngôn ngữ</span></figcaption>
+          </button>
+          <button class="reveal" data-full="screenshots/servers.png" data-caption="Máy chủ">
+            <img src="screenshots/servers.png" alt="Danh sách máy chủ" loading="lazy" />
+            <figcaption>Máy chủ <span>Ping trạng thái, players, MOTD và quick join</span></figcaption>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Tải về</div>
+            <h2>Chọn nền tảng của bạn</h2>
+            <p>Bản Windows có sẵn. macOS và Linux được build tự động qua GitHub Actions và đăng lên Releases.</p>
+          </div>
+        </div>
+
+        <div class="download-grid">
+          <article class="dl reveal">
+            <div class="dl-head">
+              <div class="dl-logo">⊞</div>
+              <div><h3>Windows x64</h3><small>NSIS installer</small></div>
+            </div>
+            <p>Bộ cài .exe, chọn thư mục cài, tạo shortcut. Bản chưa ký số — SmartScreen có thể cảnh báo.</p>
+            <a class="btn btn-primary" href="https://github.com/hiyo412012/HiyoLauncher/releases/download/v1.0.0/HiyoLauncher-1.0.0-win-x64.exe">Tải .exe</a>
+          </article>
+
+          <article class="dl reveal">
+            <div class="dl-head">
+              <div class="dl-logo">⌘</div>
+              <div><h3>macOS</h3><small>DMG · x64 &amp; arm64</small></div>
+            </div>
+            <p>Apple Silicon và Intel. Build chưa ký số; mở bằng chuột phải → Open nếu macOS chặn.</p>
+            <a class="btn btn-ghost" href="https://github.com/hiyo412012/HiyoLauncher/releases">Tải từ Releases</a>
+          </article>
+
+          <article class="dl reveal">
+            <div class="dl-head">
+              <div class="dl-logo">🐧</div>
+              <div><h3>Linux x64</h3><small>AppImage · .deb</small></div>
+            </div>
+            <p>AppImage chạy trực tiếp, hoặc gói .deb cho Debian/Ubuntu. Build tự động bởi CI.</p>
+            <a class="btn btn-ghost" href="https://github.com/hiyo412012/HiyoLauncher/releases">Tải từ Releases</a>
+          </article>
+        </div>
+        <p class="note">Nếu chưa thấy bản macOS/Linux trong release, CI đang build — xem lại <a href="https://github.com/hiyo412012/HiyoLauncher/actions/workflows/release.yml">GitHub Actions</a>.</p>
+      </div>
+    </section>
+
+    <section id="notes">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">Lưu ý</div>
+            <h2>Trước khi chơi</h2>
+          </div>
+        </div>
+        <div class="notes">
+          <article class="card note-card reveal">
+            <h3>Đăng nhập Microsoft</h3>
+            <p>Cần Azure public client ID (miễn phí). Xem <a href="https://github.com/hiyo412012/HiyoLauncher/blob/main/docs/microsoft-auth.md">hướng dẫn</a>, rồi dán vào Settings → Advanced. Offline mode vẫn dùng được ngay.</p>
+          </article>
+          <article class="card note-card reveal">
+            <h3>Tài khoản offline</h3>
+            <p>Chỉ dành cho server offline/LAN và người đã sở hữu Minecraft. Launcher không phân phối game và không vượt qua bản quyền cho server online.</p>
+          </article>
+          <article class="card note-card warn reveal">
+            <h3>Bản build chưa ký số</h3>
+            <p>Windows SmartScreen và macOS Gatekeeper có thể cảnh báo lần đầu. Đây là app open-source chưa có chứng chỉ ký số thương mại.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <a class="brand" href="#top"><img src="assets/logo.svg" alt="" /><span>HiyoLauncher</span></a>
+        <div class="foot-links">
+          <a href="https://github.com/hiyo412012/HiyoLauncher">GitHub</a>
+          <a href="https://github.com/hiyo412012/HiyoLauncher/releases">Releases</a>
+          <a href="https://github.com/hiyo412012/HiyoLauncher/blob/main/README.md">README</a>
+          <a href="https://github.com/hiyo412012/HiyoLauncher/blob/main/README_vi.md">Tiếng Việt</a>
+          <a href="https://github.com/hiyo412012/HiyoLauncher/blob/main/LICENSE">MIT</a>
+        </div>
+      </div>
+      <p class="disclaimer">
+        HiyoLauncher không liên kết với Mojang Studios, Microsoft hay Modrinth. Minecraft là thương hiệu của Mojang Studios.
+        © <span id="year">2026</span> HiyoLauncher contributors.
+      </p>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Xem ảnh">
+    <button id="lightbox-close" aria-label="Đóng">×</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script>
+    // Reveal on scroll
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in')
+            io.unobserve(entry.target)
+          }
+        }
+      },
+      { threshold: 0.12 },
+    )
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox')
+    const lightboxImg = document.getElementById('lightbox-img')
+    document.querySelectorAll('.gallery button').forEach((button) => {
+      button.addEventListener('click', () => {
+        lightboxImg.src = button.dataset.full
+        lightboxImg.alt = button.dataset.caption || ''
+        lightbox.classList.add('open')
+      })
+    })
+    function closeLightbox() {
+      lightbox.classList.remove('open')
+      lightboxImg.src = ''
+    }
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox)
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) closeLightbox()
+    })
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeLightbox()
+    })
+
+    document.getElementById('year').textContent = new Date().getFullYear()
+  </script>
+</body>
+</html>
